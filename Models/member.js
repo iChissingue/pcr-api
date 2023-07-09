@@ -17,7 +17,8 @@ class Member{
     async findById(id){
         try {
            
-            let member = await Knex.select("id", "name", "age").where({ id: id }).table("member")
+            let member = await Knex.select("id", "name", "age", "inheritant", "sex", "adress_id", "contacts_id", "admissionDate")
+            .where({ id: id }).table("member")
             if(member.length > 0){
                 return member[0]
         }else{
@@ -31,7 +32,8 @@ class Member{
 
     async findMember(name){
 
-        let member = await Knex.select("id", "name", "age").where({ name: name }).table("member")
+        let member = await Knex.select("id", "name", "age")
+        .where({ name: name }).table("member")
         if(member.length > 0){
             return member[0]
         }else{
@@ -49,8 +51,53 @@ class Member{
     }
 
     async remove(id){
-        await Knex.delete().where({ id: id }).table("member")
-        return true
+        try {
+            await Knex.delete().where({ id: id }).table("member")
+            return {status: true}
+        } catch (error) {
+            return error
+        }  
+    }
+
+    async edit(id, name, age, inheritant, sex, adress_id, contacts_id, admissionDate){
+        let result = this.findById(id)
+
+        if(result){
+            
+            let editMember ={}
+
+            if(name != result.name){
+                editMember.name = name
+            }
+
+            if(age != result.age){
+                editMember.age = age
+            }
+
+            if(inheritant != result.inheritant){
+                editMember.inheritant = inheritant
+            }
+            if(sex != result.sex){
+                editMember.sex = sex
+            }
+
+            if(adress_id != result.adress_id){
+                editMember.adress_id = adress_id
+            }
+
+            if(contacts_id != result.contacts_id){
+                editMember.contacts_id = contacts_id
+            }
+           
+            if(admissionDate != result.admissionDate)
+            
+                await Knex.update({editMember}).where({ id: result.id }).table('member')
+                return true
+           
+            
+        }else{
+            return false
+        }     
     }
 }
 

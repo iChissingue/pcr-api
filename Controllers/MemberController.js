@@ -58,6 +58,17 @@ class MemberController{
             res.status(404).send("O membro nao foi encontrado na base de dados!")
         }
     }
+
+    async update(req, res){
+        let { id, name, age, inheritant, sex, adress_id, contacts_id, admissionDate  } =req.body
+
+        let result = await Member.edit(id, name, age, inheritant, sex, adress_id, contacts_id, admissionDate)
+        if(result){
+            res.status(200).send(result)
+        }else{
+            res.status(400).send("Nao foi possivel atualizar o membro!")
+        }
+    }
 }
 
 module.exports = new MemberController()
