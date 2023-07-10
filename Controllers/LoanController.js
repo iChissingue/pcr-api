@@ -1,0 +1,26 @@
+const Loan = require('../Models/Loan')
+
+class LoanController{
+    async index(req, res){
+        
+        let result = await Loan.findLoans()
+        if(result.length >0){
+            res.status(200).send(result)
+        }else{
+            res.status(404).send("Nao existem emprestimos no banco de dados!")
+        }
+    }
+
+    async create(req, res){
+        let { loanDate, loanAmmount, member_id } = req.body
+
+        let result = await Loan.new(loanDate, loanAmmount, member_id)
+        if(result){
+            res.status(200).send()
+        }else{
+            res.status(404).send("Nao foi possivel cadastrar o emprestimo!")
+        }
+    }
+}
+
+module.exports = new LoanController()

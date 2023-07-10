@@ -2,6 +2,7 @@ const express = require('express')
 const UserController = require('../Controllers/UserController')
 const MemberController = require('../Controllers/MemberController')
 const SavingsController = require('../Controllers/SavingsController')
+const LoanController = require('../Controllers/LoanController')
 const Router = express.Router()
 
 Router.get('/users', UserController.index)
@@ -15,6 +16,8 @@ Router.put('/member', MemberController.update)
 Router.get('/savings', SavingsController.index)
 Router.post('/savings', SavingsController.create)
 Router.delete('/savings', SavingsController.delete)
+Router.get('/loan', LoanController.index)
+Router.post('/loan', LoanController.create)
 
 
 module.exports = Router

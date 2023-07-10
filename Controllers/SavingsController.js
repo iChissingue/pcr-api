@@ -32,8 +32,8 @@ class SavingsController{
         let { id } = req.body
         
         let result = await Savings.remove(id)
-        if(result){
-            res.status(200).send(result)
+        if(result.status){
+            res.status(200).send("Poupanca deletada com sucesso!")
         }else{
             res.status(400).send(result)
         }

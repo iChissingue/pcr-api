@@ -15,10 +15,16 @@ class Savings{
     }
 
     async findById(id){
-
+    
         let saving = await Knex.select("id", "savingsDate", "savingsAmmount", "sFund", "member_id")
         .where({ id: id }).table("savings")
-        return saving
+       
+        if(saving.length >0){
+           return saving[0] 
+        }else{
+           return false
+        }
+
     }
     async findByDate(savingsDate){
 
@@ -41,12 +47,12 @@ class Savings{
     async remove(id){
 
         let saving = this.findById(id)
-        if(saving.length >0){
+        if(saving != {}){
             try {
                 await Knex.delete().where({ id: id }).table("savings")
-                return {status: true} 
+                return saving 
             } catch (error) {
-                return false
+                return error
             }
         }else{
             return {status: false, error: "A poupanca que pretende deletar nao existe!"}
