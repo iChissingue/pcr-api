@@ -4,6 +4,8 @@ const MemberController = require('../Controllers/MemberController')
 const SavingsController = require('../Controllers/SavingsController')
 const LoanController = require('../Controllers/LoanController')
 const RefundController = require('../Controllers/RefundController')
+const AdressController = require('../Controllers/AdressController')
+const ContactController = require('../Controllers/ContactController')
 const Router = express.Router()
 
 Router.get('/users', UserController.index)
@@ -21,6 +23,10 @@ Router.get('/loan', LoanController.index)
 Router.post('/loan', LoanController.create)
 Router.post('/refund', RefundController.create)
 Router.get('/refund/:id', RefundController.findRefund)
+Router.post('/adress', AdressController.create)
+Router.get('/adress/id', AdressController.findAdress)
+Router.get('/contact/:id', ContactController.findContact)
+Router.post('/contact', ContactController.create)
 
 
 module.exports = Router
