@@ -16,9 +16,9 @@ class LoanController{
 
         let result = await Loan.new(loanDate, loanAmmount, member_id)
         if(result){
-            res.status(200).send()
+            res.status(200).send("Emprestimo gravado sucesso!")
         }else{
-            res.status(404).send("Nao foi possivel cadastrar o emprestimo!")
+            res.status(404).send(`O membro ja te um emprestimo para o dia ${loanDate}!`)
         }
     }
 }

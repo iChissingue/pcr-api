@@ -9,9 +9,28 @@ class Loan{
 
     }
 
+    async findByDate(loanDate){
+        let loan = await Knex.select("id", "loanDate", "loanAmmount", "member_id")
+            .where({ loanDate: loanDate }).table("loan")
+            if(loan.length >0){
+                return loan
+            }else{
+                 return false
+            }
+    }
+
+
     async new(loanDate, loanAmmount, member_id){
-        await Knex.insert({ loanDate, loanAmmount, member_id }).table("loan")
-        return true
+
+        let loan = await this.findByDate(loanDate)
+        if(loan){
+            return false
+        }else{
+            
+            await Knex.insert({ loanDate, loanAmmount, member_id }).table("loan")
+            return true
+        }
+        
     }
 }
 
