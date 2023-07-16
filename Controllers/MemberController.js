@@ -5,12 +5,19 @@ class MemberController{
     async index(req, res){
         
         let result = await Member.findAll()
+<<<<<<< HEAD
         if(result.length >0){
+=======
+        if(result != undefined){
+>>>>>>> bf1e4e5c676d2991cc2554d2c1e263c62042030a
             res.status(200).send(result)
         }else{
             res.status(404).send(result.error)
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> bf1e4e5c676d2991cc2554d2c1e263c62042030a
     }
 
     async findOne(req, res){

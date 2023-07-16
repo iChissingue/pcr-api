@@ -6,7 +6,11 @@ class Member{
         
 
         let members = Knex.select("*").table("member")
+<<<<<<< HEAD
         if(members.length > 0){
+=======
+        if(members != undefined){
+>>>>>>> bf1e4e5c676d2991cc2554d2c1e263c62042030a
             return members
         }else{
             return {status: false, error: "Nao existem usuarios no banco de dados!"}
