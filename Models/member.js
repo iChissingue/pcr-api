@@ -3,14 +3,8 @@ const Knex = require('../DataBase/Connection')
 class Member{
 
     async findAll(){
-        
-
         let members = Knex.select("*").table("member")
-<<<<<<< HEAD
-        if(members.length > 0){
-=======
-        if(members != undefined){
->>>>>>> bf1e4e5c676d2991cc2554d2c1e263c62042030a
+        if(members.length>0){
             return members
         }else{
             return {status: false, error: "Nao existem usuarios no banco de dados!"}
@@ -45,9 +39,9 @@ class Member{
         }
     }
     
-    async new(name, age, inheritant, sex, adress_id, contacts_id, admissionDate){
+    async new(name, age, inheritant, sex, adress_id, contact, admissionDate){
         try {
-            await Knex.insert({ name, age, inheritant, sex, adress_id, contacts_id, admissionDate }).table('member')
+            await Knex.insert({ name, age, inheritant, sex, adress_id, contact, admissionDate }).table('member')
             return true
         } catch (error) {
             return error
@@ -63,7 +57,7 @@ class Member{
         }  
     }
 
-    async edit(id, name, age, inheritant, sex, adress_id, contacts_id, admissionDate){
+    async edit(id, name, age, inheritant, sex, adress_id, contact, admissionDate){
         let result = this.findById(id)
 
         if(result){

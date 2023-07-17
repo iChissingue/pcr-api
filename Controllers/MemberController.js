@@ -1,23 +1,15 @@
-const Member = require('../Models/Member')
+const Member = require('../Models/member')
 
 class MemberController{
 
     async index(req, res){
         
         let result = await Member.findAll()
-<<<<<<< HEAD
         if(result.length >0){
-=======
-        if(result != undefined){
->>>>>>> bf1e4e5c676d2991cc2554d2c1e263c62042030a
             res.status(200).send(result)
         }else{
             res.status(404).send(result.error)
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> bf1e4e5c676d2991cc2554d2c1e263c62042030a
     }
 
     async findOne(req, res){
@@ -33,20 +25,21 @@ class MemberController{
     }
 
     async create(req, res){
-        let { name, age, inheritant, sex, adress_id, contacts_id, admissionDate  } =req.body
+        let { name, age, inheritant, sex, adress_id, contact, admissionDate  } =req.body
 
         let member = await Member.findMember(name)
         
-        if(!member){
-            let result = await Member.new(name, age, inheritant, sex, adress_id, contacts_id, admissionDate)
+        if(member != undefined){
+            res.status(400).send("O membro que pretende cadastrar ja existe no banco de dados!")
+        }else{
+            
+            let result = await Member.new(name, age, inheritant, sex, adress_id, contact, admissionDate)
             
             if(result){
                 res.status(200).send("Membro cadastrado com sucesso!")
             }else{
-                res.stattus(400).send("falha no serivdor!")
+                res.stattus(400).send("falha no servidor!")
             }
-        }else{
-            res.status(400).send("O membro que pretende cadastrar ja existe no banco de dados!")
         }
     }
 
