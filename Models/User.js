@@ -53,8 +53,6 @@ class User{
             }else{
                 return {status: false, error: "Usuario nao encontrado na base de dados!"}
             }
-            
-          
         } catch (error) {
             return {status: false, error: error}
         }

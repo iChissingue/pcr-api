@@ -25,50 +25,31 @@ class MemberController{
     }
 
     async create(req, res){
-        let { name, age, inheritant, sex, adress_id, contact, admissionDate  } =req.body
-
-        let member = await Member.findMember(name)
-        
-        if(member != undefined){
-            res.status(400).send("O membro que pretende cadastrar ja existe no banco de dados!")
-        }else{
-            
+        let { name, age, inheritant, sex, adress_id, contact, admissionDate  } = req.body
+    
             let result = await Member.new(name, age, inheritant, sex, adress_id, contact, admissionDate)
-            
-            if(result){
-                res.status(200).send("Membro cadastrado com sucesso!")
-            }else{
-                res.stattus(400).send("falha no servidor!")
-            }
-        }
+            result.status? res.status(200).send("Membro cadastrado com sucesso!")
+                : res.status(400).send(result.error)
     }
 
     async delete(req, res){
-        let { id } = req.body
 
-        let result = await Member.findById(id)
-        
-        if(result){
+        let { id } = req.params
+        if(!isNaN(id)){
             let removed = await Member.remove(id)
-            if(removed){
-                res.status(200).send("Membro removido com sucesso!")
-            }else{
-                res.status(405).send("nao foi possivel remover o membro!")
-            }
+            removed.status? res.status(200).send("Membro removido com sucesso!")
+                : res.status(400).send(removed.error)
         }else{
-            res.status(404).send("O membro nao foi encontrado na base de dados!")
+            res.status(400).send("Por favor insira um valor numerico!")
         }
     }
 
     async update(req, res){
-        let { id, name, age, inheritant, sex, adress_id, contacts_id, admissionDate  } =req.body
+        let { id, name, age, inheritant, sex, adress_id, contact, admissionDate  } =req.body
 
-        let result = await Member.edit(id, name, age, inheritant, sex, adress_id, contacts_id, admissionDate)
-        if(result){
-            res.status(200).send(result)
-        }else{
-            res.status(400).send("Nao foi possivel atualizar o membro!")
-        }
+        let result = await Member.edit(id, name, age, inheritant, sex, adress_id, contact, admissionDate)
+        result.status? res.status(200).send("Membro atualizado com sucesso!")
+           : res.status(400).send(result.error)
     }
 }
 

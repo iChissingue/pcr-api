@@ -15,7 +15,7 @@ class UserController{
 
         if(password == confirmPassword){
             let user =  await User.findUser(username)
-            let exist = user[0]
+            let exist = user
 
             if(!exist){
                 let result = await User.new(name, username, password, userCategory_id, userState_id)

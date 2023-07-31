@@ -5,32 +5,40 @@ const SavingsController = require('../Controllers/SavingsController')
 const LoanController = require('../Controllers/LoanController')
 const RefundController = require('../Controllers/RefundController')
 const AdressController = require('../Controllers/AdressController')
-const ContactController = require('../Controllers/ContactController')
 const CategoryController = require('../Controllers/CategoryController')
 const Router = express.Router()
 
 Router.get('/users', UserController.index)
 Router.post('/user', UserController.create)
 Router.delete('/user/:id', UserController.delete)
+
 Router.get('/members', MemberController.index)
 Router.post('/member', MemberController.create)
 Router.get('/member/:id', MemberController.findOne)
-Router.delete('/member', MemberController.delete)
+Router.delete('/member/:id', MemberController.delete)
 Router.put('/member', MemberController.update)
+
 Router.get('/savings', SavingsController.index)
 Router.post('/savings', SavingsController.create)
 Router.delete('/savings', SavingsController.delete)
+
 Router.get('/loan', LoanController.index)
 Router.post('/loan', LoanController.create)
+
 Router.post('/refund', RefundController.create)
 Router.get('/refund/:id', RefundController.findRefund)
+
 Router.post('/adress', AdressController.create)
-Router.get('/adress/id', AdressController.findAdress)
-Router.get('/contact/:id', ContactController.findContact)
-Router.post('/contact', ContactController.create)
+Router.get('/adress/:id', AdressController.findAdress)
+Router.get('/adress', AdressController.index)
+Router.put('/adress', AdressController.update)
+Router.delete('/adress/:id', AdressController.delete)
+
 Router.post('/category', CategoryController.create)
 Router.get('/categories', CategoryController.index)
 Router.get('/category/:id', CategoryController.findOne)
+Router.put('/category', CategoryController.update)
+Router.delete('/category/:id', CategoryController.delete)
 
 
 module.exports = Router
