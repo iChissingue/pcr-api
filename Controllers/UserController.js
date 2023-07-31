@@ -1,5 +1,9 @@
 const User = require('../Models/User')
 const PasswordTokens = require('../Models/PasswordTokens')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+
+let secret = "minhaaplicacao"
 
 class UserController{
 
@@ -58,6 +62,26 @@ class UserController{
                 : res.status(400).send("Senha nao alterada!")
         }else{
             res.status(400).send(isValid.error)
+        }
+    }
+
+    async login(req, res){
+        let { username, password } = req.body
+
+        let user = await User.findUser(username)
+        if(user){
+            let result = bcrypt.compare(password, user.password)
+           
+            if(result){
+                 res.status(200).send(`Ola ${user.name}, seja bem vindo ao nosso sistema!`)
+                 return
+            }else{
+                res.status(404).send("Senha invalida!")
+                return
+            }
+        }else{
+            res.status(404).send("O Usuario nao existe!")
+            return
         }
     }
 }

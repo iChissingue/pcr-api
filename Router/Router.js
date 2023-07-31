@@ -13,6 +13,7 @@ Router.post('/user', UserController.create)
 Router.delete('/user/:id', UserController.delete)
 Router.post('/user/passwordrecovery', UserController.passwordRecovery)
 Router.put('/user/editpassword', UserController.editPassword)
+Router.post('/user/login', UserController.login)
 
 Router.get('/members', MemberController.index)
 Router.post('/member', MemberController.create)
