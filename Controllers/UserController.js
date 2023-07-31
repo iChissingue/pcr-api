@@ -70,10 +70,11 @@ class UserController{
 
         let user = await User.findUser(username)
         if(user){
-            let result = bcrypt.compare(password, user.password)
+            let result = await bcrypt.compare(password, user.password)
            
             if(result){
-                 res.status(200).send(`Ola ${user.name}, seja bem vindo ao nosso sistema!`)
+                let token = await jwt.sign({ username: user.username, categry: user.usercategory }, secret)
+                 res.status(200).json({token: token})
                  return
             }else{
                 res.status(404).send("Senha invalida!")

@@ -37,7 +37,7 @@ class User{
 
     async findUser(username){
         try {
-            let user = await Knex.select("id", "name", "username", "userCategory_id").
+            let user = await Knex.select("id", "name", "username", "userCategory_id", "password").
             where({ username: username }).table("user")
             return user[0]
         } catch (error) {
