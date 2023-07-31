@@ -1,4 +1,5 @@
 const User = require('../Models/User')
+const PasswordTokens = require('../Models/PasswordTokens')
 
 class UserController{
 
@@ -13,25 +14,17 @@ class UserController{
 
         let { name, username, password, confirmPassword, userCategory_id, userState_id } = req.body
 
-        if(password == confirmPassword){
-            let user =  await User.findUser(username)
-            let exist = user
+        if(password === confirmPassword){
+                let result = await User.new(name, 
+                    username, 
+                    password, 
+                    userCategory_id, 
+                    userState_id)
 
-            if(!exist){
-                let result = await User.new(name, username, password, userCategory_id, userState_id)
-                if(result){
-                    res.status(200).send(result)
-                    return
-                }else{
-                    res.status(400).json(result.error)
-                    return
-                }
-            }else{
-                res.status(400).send("O usuario que pretende cadastrar ja existe!")
-            }
-
+                result.status? res.status(200).send("Usaurio cadastrado com sucesso!")
+                    : res.status(400).send(result.error)
         }else{
-            res.status(400).send("Senha de confirmacao errada!")
+            res.status(400).send("Senha de confirmacao incorreta!")
         }    
     }
 
@@ -45,7 +38,27 @@ class UserController{
         }else{
             res.status(400).send("Digite um valor numerico!")
         }
+    }
 
+    async passwordRecovery(req, res){
+        let { username } = req.body
+
+        let result = await PasswordTokens.create(username)
+        result.status? res.status(200).send("" + result.token)
+            : res.status(400).send(result.error)
+    }
+
+    async editPassword(req, res){
+        let { token, password } = req.body
+
+        let isValid = await PasswordTokens.validate(token)
+        if(isValid.status){
+            let result = await User.changePassword(isValid.token.user_id, password, isValid.token.token)
+            result? res.status(200).send("Senha alterada!")
+                : res.status(400).send("Senha nao alterada!")
+        }else{
+            res.status(400).send(isValid.error)
+        }
     }
 }
 

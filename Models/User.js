@@ -1,5 +1,6 @@
 const Knex = require('../DataBase/Connection')
 const bcrypt = require('bcrypt')
+const PasswordTokens = require('./PasswordTokens')
 
 
 class User{
@@ -15,21 +16,30 @@ class User{
 
     async new(name, username, password, userCategory_id, userState_id){
 
-        try {
-            let hash = await bcrypt.hash(password, 5)
-            await Knex.insert({ name, username, password: hash, userCategory_id, userState_id })
-            .table("user")
+        let userExist = await this.findUser(username)
+        if (!userExist){
             
-        } catch (error) {
-            return {status: false, error: error}
-        }
+                let hash = await bcrypt.hash(password, 5)
+                await Knex.insert({ 
+                    name, 
+                    username, 
+                    password: hash, 
+                    userCategory_id, 
+                    userState_id })
+                .table("user")
+                return {status: true}
+                
+           
+        }else{
+            return {status: false, error: "O usuario que pretende cadastrar ja existe!"}
+        } 
     }
 
     async findUser(username){
         try {
             let user = await Knex.select("id", "name", "username", "userCategory_id").
             where({ username: username }).table("user")
-            return user
+            return user[0]
         } catch (error) {
             return {status: false, error: error}
         }
@@ -56,6 +66,14 @@ class User{
         } catch (error) {
             return {status: false, error: error}
         }
+    }
+
+    async changePassword(id, newPassword, token){
+        
+        let hash = await bcrypt.hash(newPassword, 5)
+        await Knex.update({password: hash}).where({ id: id}).table("user")
+        await PasswordTokens.setUsed(token)
+        return true
     }
 }
 
