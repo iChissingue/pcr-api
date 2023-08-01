@@ -3,6 +3,7 @@ const PasswordTokens = require('../Models/PasswordTokens')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
+
 let secret = "minhaaplicacao"
 
 class UserController{
@@ -73,7 +74,10 @@ class UserController{
             let result = await bcrypt.compare(password, user.password)
            
             if(result){
-                let token = await jwt.sign({ username: user.username, categry: user.usercategory }, secret)
+                let token = jwt.sign({ 
+                    username: user.username, 
+                    userCategory_id: user.userCategory_id 
+                }, secret)
                  res.status(200).json({token: token})
                  return
             }else{
