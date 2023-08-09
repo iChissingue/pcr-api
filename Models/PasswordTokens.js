@@ -28,8 +28,8 @@ class PasswordTokens{
 
     async validate(token){
 
-        let result = await Knex.select().from("passwordTokens").where({ token: token})
-    
+        let result = await Knex.select()
+            .from("passwordTokens").where({ token: token})
         if(result.length > 0){
             let tk = result[0]
 

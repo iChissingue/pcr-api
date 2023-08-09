@@ -8,10 +8,13 @@ module.exports = function(req, res, next){
     if(authToken != undefined){
         let bearer = authToken.split(' ')
         let token = bearer[1]
-
-        let decoded = jwt.verify(token, secret)
-        console.log(decoded)
-        next()
+        try {
+            let decoded = jwt.verify(token, secret)
+            next()
+            res.send(decoded)
+        } catch (error) {
+            res.send(error.message)
+        }   
     }else{
         res.status(403).send("Autentique-se para acessar as informacoes requeridas!")
         return

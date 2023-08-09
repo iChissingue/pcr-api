@@ -1,4 +1,5 @@
 const User = require('../Models/User')
+const LoginUserToken =require('../Models/LoginUserToken')
 const PasswordTokens = require('../Models/PasswordTokens')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
@@ -69,25 +70,63 @@ class UserController{
     async login(req, res){
         let { username, password } = req.body
 
-        let user = await User.findUser(username)
-        if(user){
-            let result = await bcrypt.compare(password, user.password)
-           
-            if(result){
-                let token = jwt.sign({ 
-                    username: user.username, 
-                    userCategory_id: user.userCategory_id 
-                }, secret)
-                 res.status(200).json({token: token})
-                 return
+        if(username != null && password != null){
+
+            let user = await User.findUser(username)
+            if(user){
+                let result = await bcrypt.compare(password, user.password)
+               
+                if(result){
+                    let token = jwt.sign({ 
+                        name: user.name,
+                        username: user.username, 
+                        userCategory_id: user.userCategory_id 
+                    }, secret)
+                    await LoginUserToken.new(token, user.id)
+                     res.status(200).json({token: token})
+                     return
+                }else{
+                    res.status(203).send("Senha invalida!")
+                    return
+                }
             }else{
-                res.status(404).send("Senha invalida!")
+                res.status(203).send("O Usuario nao existe!")
                 return
             }
         }else{
-            res.status(404).send("O Usuario nao existe!")
+            res.status(400).send("Preenche os campos e tenta novamente!")
+        }
+    }
+
+    async getLoginCredentials(req, res){
+        const authToken = req.headers['authorization']
+
+        if(authToken != undefined){
+            let bearer = authToken.split(' ')
+            let token = bearer[1]
+            try {
+                let decoded = jwt.verify(token, secret)
+                res.status(200).send(decoded)
+            } catch (error) {
+                res.send(error.message)
+            }   
+        }else{
+            res.status(403).send("Autentique-se para acessar as informacoes requeridas!")
             return
         }
+    }
+
+    async loginTokenValidate(req, res){
+        const { token } = req.body
+        if(token != undefined){
+
+            const isValidToken = await LoginUserToken.validate(token)
+            isValidToken.status? res.status(200).send(isValidToken.token)
+            : res.status(203).send(isValidToken.error)
+        }else{
+            res.status(203).send("O token nao existe!")
+        }
+
     }
 }
 

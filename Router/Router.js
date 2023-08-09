@@ -9,12 +9,15 @@ const CategoryController = require('../Controllers/CategoryController')
 const Router = express.Router()
 const AdminAuth = require('../Middleware/AdminAuth')
 
+
 Router.get('/users', AdminAuth, UserController.index)
 Router.post('/user', UserController.create)
 Router.delete('/user/:id', UserController.delete)
 Router.post('/user/passwordrecovery', UserController.passwordRecovery)
 Router.put('/user/editpassword', UserController.editPassword)
 Router.post('/user/login', UserController.login)
+Router.get('/user/getLoginCredentials', UserController.getLoginCredentials)
+Router.post('/user/loginTokenValidate', UserController.loginTokenValidate)
 
 Router.get('/members', MemberController.index)
 Router.post('/member', MemberController.create)
