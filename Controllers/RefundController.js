@@ -19,10 +19,12 @@ class RefundController{
     async create(req, res){
         let { refundDate, 
             refundAmmount, 
-            interestAmmount, 
-            member_id } = req.body
+            interestPay, 
+            member_id,
+            creator 
+        } = req.body
         
-            let result = await Refund.new( refundDate, refundAmmount, interestAmmount, member_id)
+            let result = await Refund.new( refundDate, refundAmmount, interestPay, member_id, creator)
             if(result){
                 res.status(200).send("Reembolso gravado com sucesso!")
             }else{

@@ -27,9 +27,7 @@ class User{
                     userCategory_id, 
                     userState_id })
                 .table("user")
-                return {status: true}
-                
-           
+                return {status: true}  
         }else{
             return {status: false, error: "O usuario que pretende cadastrar ja existe!"}
         } 

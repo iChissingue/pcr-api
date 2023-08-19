@@ -13,7 +13,7 @@ class UserController{
 
         let result = await User.findAll()
         result? res.status(200).json(result)
-        : res.status(404).send("Nao existem usuarios na base de dados!")
+        : res.status(203).send("Nao existem usuarios na base de dados!")
     }
 
     async create(req, res){
@@ -28,9 +28,9 @@ class UserController{
                     userState_id)
 
                 result.status? res.status(200).send("Usaurio cadastrado com sucesso!")
-                    : res.status(400).send(result.error)
+                    : res.status(203).send(result.error)
         }else{
-            res.status(400).send("Senha de confirmacao incorreta!")
+            res.status(203).send("Senha de confirmacao incorreta!")
         }    
     }
 

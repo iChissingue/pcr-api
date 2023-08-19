@@ -1,5 +1,8 @@
 const Knex = require('../DataBase/Connection')
 const Adress = require('./Adress')
+const Savings = require('../Models/Savings')
+const Loan = require('./Loan')
+const Refund = require('./Refund')
 
 class Member{
 
@@ -17,18 +20,13 @@ class Member{
     async findById(id){
         try {
            
-            let member = await Knex.select(
-                "id", 
-                "name", 
-                "age", 
-                "inheritant", 
-                "sex", 
-                "adress_id", 
-                "contact", 
-                "admissionDate")
+            let member = await Knex.select()
             .where({ id: id }).table("member")
             if(member.length > 0){
-                return member[0]
+                const memberSavings = await Savings.findByMemberId(id)
+                const memberLoans = await Loan.findByMemberId(id) 
+                const memberRefunds = await Refund.findByMemberId(id)
+                return {member: member[0], memberSavings, memberLoans, memberRefunds}
         }else{
             return false
         }
@@ -84,6 +82,7 @@ class Member{
         if(memberExist){
             try {
                 await Knex.delete().where({ id: id }).table("member")
+                await Savings.remove(id)
                 return { status: true }
             } catch (error) {
                 return {status: false, error: error}

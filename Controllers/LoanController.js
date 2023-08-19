@@ -12,9 +12,9 @@ class LoanController{
     }
 
     async create(req, res){
-        let { loanDate, loanAmmount, member_id } = req.body
+        let { loanDate, loanAmmount, interestAmmount, member_id, creator } = req.body
 
-        let result = await Loan.new(loanDate, loanAmmount, member_id)
+        let result = await Loan.new(loanDate, loanAmmount, interestAmmount, member_id, creator)
         if(result){
             res.status(200).send("Emprestimo gravado sucesso!")
         }else{

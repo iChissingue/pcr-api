@@ -1,4 +1,5 @@
 const Member = require('../Models/member')
+const Adress = require('../Models/Adress')
 
 class MemberController{
 
@@ -17,9 +18,18 @@ class MemberController{
 
         let member = await Member.findById(id)
         if(member){
-            res.status(200).send(member)
+          
+            const {adress_id} = member.member
+            
+            const adress = await Adress.findById(adress_id)
+            if(adress !== undefined){
+                const Member ={...member, ...adress}
+                res.status(200).send(Member)
+            }else{
+                res.status(203).send("O edereco e invalido!") 
+            }
         }else{
-            res.status(400).send("O membro solicitado nao existe!")
+            res.status(203).send("O membro solicitado nao existe!")
         }
        
     }

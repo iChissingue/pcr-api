@@ -15,9 +15,8 @@ class Refund{
     }
     
     
-    async findByDate(refundDate){
-        
-        let refund = await Knex.select("id", "refundDate", "refundAmmount", "interestAmmount", "member_id")
+    async findByDate(refundDate){ 
+        let refund = await Knex.select()
             .where({ refundDate: refundDate }).table("refund")
             if(refund.length > 0){
                 return refund
@@ -26,21 +25,30 @@ class Refund{
             }
     }
 
-
-    async new(refundDate, refundAmmount, interestAmmount, member_id){
-        try {
-            let refund = await this.findByDate(refundDate)
-
+    async findByMemberId(member_id){ 
+        let refund = await Knex.select()
+            .where({ member_id: member_id }).table("refund")
             if(refund.length > 0){
-                return false
+                return refund
             }else{
-                await Knex.insert({ refundDate, refundAmmount, interestAmmount, member_id })
-                    .table("refund")
-                return true
+                return false
             }
-        } catch (error) {
-            return error
-        }
+    }
+
+
+    async new(refundDate, refundAmmount, interestPay, member_id, creator){
+        // try {
+            let refund = await this.findByDate(refundDate)
+            if(!refund.length > 0){
+                await Knex.insert({ refundDate, refundAmmount, interestPay, member_id, creator })
+                    .table("refund")
+                    return true
+            }else{
+                return false
+            }
+        // } catch (error) {
+        //     return error
+        // }
     }
 
 }
