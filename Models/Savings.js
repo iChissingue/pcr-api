@@ -47,6 +47,13 @@ class Savings{
         return saving
     }
 
+    async findBetweenDates(startDate, endDate){
+
+        let saving = await Knex.select()
+        .whereBetween( "savingsDate",[startDate, endDate] ).table("savings")
+        return saving
+    }
+
     async new(savingsDate, savingsAmmount, sFund, member_id){
 
         let response = await this.findByMemberId(member_id)

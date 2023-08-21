@@ -15,7 +15,7 @@ class Refund{
     }
     
     
-    async findByDate(refundDate){ 
+    async findByDate(refundDate){  
         let refund = await Knex.select()
             .where({ refundDate: refundDate }).table("refund")
             if(refund.length > 0){

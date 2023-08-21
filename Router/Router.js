@@ -28,6 +28,7 @@ Router.put('/member', MemberController.update)
 Router.get('/savings', SavingsController.index)
 Router.post('/savings', SavingsController.create)
 Router.delete('/savings', SavingsController.delete)
+Router.get('/savingsbetween/:startDate,:endDate', SavingsController.findToReport)
 
 Router.get('/loan', LoanController.index)
 Router.post('/loan', LoanController.create)
