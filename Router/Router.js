@@ -35,6 +35,7 @@ Router.post('/loan', LoanController.create)
 
 Router.post('/refund', RefundController.create)
 Router.get('/refund/:id', RefundController.findRefund)
+Router.get('/refunds', RefundController.index)
 
 Router.post('/adress', AdressController.create)
 Router.get('/adress/:id', AdressController.findAdress)

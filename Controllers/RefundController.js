@@ -3,6 +3,15 @@ const Refund = require('../Models/Refund')
 
 class RefundController{
 
+    async index(req, res){
+        let refunds = await Refund.allRefunds()
+        if(refunds){
+            res.status(200).send(refunds)
+        }else{
+            res.status(203).send("Reembolsos nao encontados!")
+        }
+    }
+
     async findRefund(req, res){
         let { id } = req.params
 
@@ -18,7 +27,7 @@ class RefundController{
 
     async create(req, res){
         let { refundDate, 
-            refundAmmount, 
+            refundAmmount,
             interestPay, 
             member_id,
             creator 

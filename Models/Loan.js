@@ -21,7 +21,7 @@ class Loan{
 
     async findByMemberId(member_id){
         let loan = await Knex.select()
-            .where({ member_id: member_id }).table("loan")
+            .where({ member_id: member_id }).table("loan").orderBy("loanDate", "desc")
             if(loan.length >0){
                 return loan
             }else{
@@ -30,14 +30,14 @@ class Loan{
     }
 
 
-    async new(loanDate, loanAmmount, interestAmmount, member_id, creator){
+    async new(loanDate, loanAmmount, refundWaitingDate, interestAmmount, member_id, creator){
 
         let loan = await this.findByDate(loanDate)
         if(loan){
             return false
         }else{
             
-            await Knex.insert({ loanDate, loanAmmount, interestAmmount, member_id, creator }).table("loan")
+            await Knex.insert({ loanDate, loanAmmount, refundWaitingDate, interestAmmount, member_id, creator }).table("loan")
             return true
         }
         

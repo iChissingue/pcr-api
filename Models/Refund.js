@@ -2,6 +2,14 @@ const Knex = require('../DataBase/Connection')
 
 class Refund{
 
+    async allRefunds(){
+        let refunds = await Knex.select("*").table("refund")
+        if(refunds.length>0){
+            return refunds
+        }else{
+            return false
+        }
+    }
 
     async findById(id){
         
@@ -27,7 +35,7 @@ class Refund{
 
     async findByMemberId(member_id){ 
         let refund = await Knex.select()
-            .where({ member_id: member_id }).table("refund")
+            .where({ member_id: member_id }).table("refund").orderBy("refundDate", "desc")
             if(refund.length > 0){
                 return refund
             }else{

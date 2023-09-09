@@ -15,8 +15,7 @@ class SavingsController{
 
     async findToReport(req, res){
        const {startDate, endDate} = req.params
-        console.log(startDate)
-        console.log(endDate)
+       
         const response = await Savings.findBetweenDates(startDate, endDate)
         if(response){
             res.status(200).send(response)
